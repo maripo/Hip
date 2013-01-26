@@ -13,14 +13,14 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 	public static final String PARAM_NAME_COMMAND_ID = "cid";
 	public static final String PARAM_NAME_COMMAND_VALUE = "val";
 
-	public static final int COMMAND_ID_CREATE_EVERNOTE_MEMO = 100;
-	public static final int COMMAND_ID_MAIL_TO = 200;
-	public static final int COMMAND_ID_TWEET = 300;
-	public static final int COMMAND_ID_FACEBOOK = 400;
-	public static final int COMMAND_ID_JALAN_SEARCH_ONSEN = 500;
-	public static final int COMMAND_ID_GURUNAVI_SEARCH = 600;
-	public static final int COMMAND_ID_TURN_ON_BATH = 700;
-	public static final int COMMAND_ID_EMIT_IR = 800;
+	public static final int COMMAND_ID_CREATE_EVERNOTE_MEMO = 1;
+	public static final int COMMAND_ID_MAIL_TO = 2;
+	public static final int COMMAND_ID_TWEET = 3;
+	public static final int COMMAND_ID_FACEBOOK = 4;
+	public static final int COMMAND_ID_JALAN_SEARCH_ONSEN = 5;
+	public static final int COMMAND_ID_GURUNAVI_SEARCH = 6;
+	public static final int COMMAND_ID_TURN_ON_BATH = 7;
+	public static final int COMMAND_ID_EMIT_IR = 8;
 
 	protected abstract int getCommandId();
 
