@@ -6,8 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import android.util.Log;
-
 import st.tori.hip.cmd.exception.CommandExecException;
 
 public abstract class AbstractHipServerCommand implements CommandInterface {
@@ -35,10 +33,12 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 		String value = getCommandValue(keyword);
 		try {
 			String urlStr = "http://dev.tori.st/maven.websample/hip?"
-					+ PARAM_NAME_COMMAND_ID + "=" + getCommandId() + "&"
-					+ PARAM_NAME_COMMAND_VALUE + "="
-					+ URLEncoder.encode(value, "UTF-8");
-			Log.d("Hip", "URL=" + urlStr);
+					+ PARAM_NAME_COMMAND_ID + "=" + getCommandId();
+			if(value!=null&&value.length()>=0) {
+				urlStr += "&"
+						+ PARAM_NAME_COMMAND_VALUE + "="
+						+ URLEncoder.encode(value, "UTF-8");
+			}
 			return new HipServerResponse(doGet(urlStr));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
