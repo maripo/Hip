@@ -82,7 +82,11 @@ public class ListenActivity extends Activity implements SoundMonitorListener {
 			if(resultCode == RESULT_OK) {
 				ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				if (!textMatchList.isEmpty()) {
-					mTextRecognitionResult.setText(textMatchList.get(0));
+					String message = textMatchList.get(0);
+					mTextRecognitionResult.setText(message);
+					Intent i = new Intent(getApplicationContext(), ExecActivity.class);
+					i.putExtra(ExecActivity.PARAM_NAME_KEYWORD, message);
+					startActivity(i);
 				}
 			}
 			else {
