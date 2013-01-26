@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="st.tori.hip.android"
+    package="st.tori.hip.android.activity"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="st.tori.hip.android.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="st.tori.hip.android.ListenActivity"
+            android:name=".ListenActivity"
             android:label="@string/title_activity" >
         </activity>
         <activity
-            android:name="st.tori.hip.android.ExecActivity"
+            android:name=".ExecActivity"
             android:label="@string/title_activity" >
         </activity>
     </application>

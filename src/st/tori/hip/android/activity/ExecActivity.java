@@ -1,20 +1,20 @@
-package st.tori.hip.android;
+package st.tori.hip.android.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 
-public class ListenActivity extends Activity {
+public class ExecActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_listen);
+		setContentView(R.layout.activity_exec);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_listen, menu);
+		getMenuInflater().inflate(R.menu.activity_exec, menu);
 		return true;
 	}
 }

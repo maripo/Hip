@@ -1,4 +1,4 @@
-package st.tori.hip.android;
+package st.tori.hip.android.activity;
 
 import android.app.Activity;
 import android.content.Intent;
