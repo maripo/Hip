@@ -1,15 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Listen"
-        tools:context=".ListenActivity" />
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:orientation="vertical" >
+
+		<Button
+			android:id="@+id/button_check_sound_level"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Check Sound Level" />
+		<ProgressBar
+			android:id="@+id/progress_bar_sound_level"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+		<Button
+			android:id="@+id/button_start_listening"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Start Listening" />
+	
+		<TextView
+			android:id="@+id/text_recognition_result"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+		android:text="-" />
+
+
+	</LinearLayout>
 
 </RelativeLayout>
