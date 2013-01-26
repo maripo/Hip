@@ -13,6 +13,10 @@ public class MainActivity extends Activity implements CommandListener {
 	private Button buttonListen;
 	private Button buttonExec;
 	private CommandExecutor mCommandExecutor;
+	
+	private String GCM_APP_ID = "506944099595";
+	
+	//Server Key AIzaSyCIQnfyzBHKr7lLbQJFWR4n3uw6Qu7Eyu0
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
