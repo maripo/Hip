@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements CommandListener {
 
 	private Button buttonListen;
 	private Button buttonExec;
 	private CommandExecutor mCommandExecutor;
+	private TextView debugText;
 	
 	public static String GCM_SENDER_ID = "506944099595";
 	
@@ -27,6 +29,7 @@ public class MainActivity extends Activity implements CommandListener {
 		setContentView(R.layout.activity_main);
 		mCommandExecutor = new CommandExecutor(this, this);
 		Button buttonListen = (Button) findViewById(R.id.buttonListen);
+		debugText = (TextView) findViewById(R.id.debug_text);
 		buttonListen.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -47,9 +50,11 @@ public class MainActivity extends Activity implements CommandListener {
 		final String regId = GCMRegistrar.getRegistrationId(this);
 		if (regId.equals("")) {
 			Log.v("Hip", "GCM: not registered");
+			debugText.setText("GCM: not registered");
 			GCMRegistrar.register(this, GCM_SENDER_ID);
 		} else {
 			Log.v("Hip", "GCM: already registered. REG_ID=" + regId);
+			debugText.setText("GCM: already registered. REG_ID=" + regId);
 		}
 	}
 

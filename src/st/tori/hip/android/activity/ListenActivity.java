@@ -10,7 +10,10 @@ import st.tori.hip.android.widget.SoundMonitor;
 import st.tori.hip.android.widget.SoundMonitor.SoundMonitorListener;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -23,7 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ListenActivity extends Activity implements SoundMonitorListener, 
-	OnInitListener, CommandListener, OnUtteranceCompletedListener {
+	OnInitListener, CommandListener, OnUtteranceCompletedListener, OnSharedPreferenceChangeListener {
 
 	public static final String TAG = "Hip";
 	
@@ -61,6 +64,8 @@ public class ListenActivity extends Activity implements SoundMonitorListener,
 		
 		mSpeech = new TextToSpeech(this, this);
 		mSoundMonitor.start();
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		pref.registerOnSharedPreferenceChangeListener(this);
 		
 	}
 	
@@ -100,8 +105,7 @@ public class ListenActivity extends Activity implements SoundMonitorListener,
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		HashMap<String, String> param = new HashMap<String, String>();
-		param.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, new Date().toString());
+		HashMap<String, String> param = getSpeechParam();
 		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
 			if(resultCode == RESULT_OK) {
 				ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
@@ -118,6 +122,13 @@ public class ListenActivity extends Activity implements SoundMonitorListener,
 				mSpeech.speak("聞き取れませんでした", TextToSpeech.QUEUE_ADD, param);
 			}
 		}
+	}
+
+	private HashMap<String, String> getSpeechParam()
+	{
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, new Date().toString());
+		return param;
 	}
 
 	@Override
@@ -160,6 +171,17 @@ public class ListenActivity extends Activity implements SoundMonitorListener,
 	{
 		Log.d(TAG, "ListenActivity.onUtteranceCompleted");
 		mSoundMonitor.resume();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key)
+	{
+		Log.d(TAG, "ListenActivity.onSharedPreferenceChanged");
+		String message = PreferenceManager.getDefaultSharedPreferences(this).getString(GCMIntentService.PREF_KEY_CONTENT, "ちゃんと受信できませんでした");
+		mSoundMonitor.pause();
+		waitingSpeech = true;
+		mSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, getSpeechParam());
 	}
 
 }

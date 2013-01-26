@@ -1,7 +1,13 @@
 package st.tori.hip.android.activity;
 
+import java.net.URLDecoder;
+import java.util.Date;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -25,11 +31,20 @@ public class GCMIntentService extends GCMBaseIntentService
 		
 	}
 
+	public static final String PREF_KEY_DATE = "message_date";
+	public static final String PREF_KEY_CONTENT = "message_content";
+	
 	@Override
-	protected void onMessage(Context arg0, Intent arg1)
+	protected void onMessage(Context context, Intent intent)
 	{
 		Log.d(TAG, "GCMIntentService.onMessage");
-		
+		String message = URLDecoder.decode(intent.getExtras().getString("message"));
+		Log.d(TAG, "Message=" + message);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor editor = pref.edit();
+		editor.putLong(PREF_KEY_DATE,new Date().getTime());
+		editor.putString(PREF_KEY_CONTENT, message);
+		editor.commit();
 	}
 
 	@Override
