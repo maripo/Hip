@@ -49,6 +49,7 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 	}
 
 	public String doGet(String urlStr) {
+		System.out.println("Request:"+urlStr);
 		try {
 			URL url = new URL(urlStr);
 			HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -59,7 +60,8 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 			in.read(b);
 			in.close();
 			http.disconnect();
-			return new String(b);
+			String body = new String(b);
+			System.out.println("Response:"+body);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
