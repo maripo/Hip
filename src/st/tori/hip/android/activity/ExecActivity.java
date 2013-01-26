@@ -9,6 +9,7 @@ import st.tori.hip.cmd.CommandResultTextToSpeechInterface;
 import st.tori.hip.cmd.exception.CommandExecException;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.widget.TextView;
@@ -17,10 +18,14 @@ import android.widget.Toast;
 public class ExecActivity extends Activity implements
 		TextToSpeech.OnInitListener {
 
+	static {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build());
+	}
+
 	public static final String PARAM_NAME_KEYWORD = "KEYWORD";
 
-	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] {
-		new CommandMailTo(), };
+	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] { new CommandMailTo(), };
 
 	private TextView textKeyword;
 	private TextToSpeech mTts;
@@ -50,9 +55,11 @@ public class ExecActivity extends Activity implements
 					if (result instanceof CommandResultTextToSpeechInterface) {
 						String speechText = ((CommandResultTextToSpeechInterface) result)
 								.getSpeechText();
-						System.out.println("ExecActivity.onCreate:speechText="+speechText);
+						System.out.println("ExecActivity.onCreate:speechText="
+								+ speechText);
 						if (speechText != null && speechText.length() > 0) {
-							mTts.speak(speechText, TextToSpeech.QUEUE_FLUSH, null);
+							mTts.speak(speechText, TextToSpeech.QUEUE_FLUSH,
+									null);
 						}
 					}
 				} catch (CommandExecException e) {
@@ -81,6 +88,7 @@ public class ExecActivity extends Activity implements
 	}
 
 	private boolean isTTSReady = false;
+
 	@Override
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
@@ -88,15 +96,18 @@ public class ExecActivity extends Activity implements
 			if (result == TextToSpeech.LANG_MISSING_DATA
 					|| result == TextToSpeech.LANG_NOT_SUPPORTED) {
 				System.out.println("ExecActivity.onInit:1");
-				Toast.makeText(this, "Japanese not available", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Japanese not available",
+						Toast.LENGTH_LONG).show();
 			} else {
 				System.out.println("ExecActivity.onInit:2");
 				isTTSReady = true;
-				//Toast.makeText(this, "TTS initialized", Toast.LENGTH_LONG).show();
+				// Toast.makeText(this, "TTS initialized",
+				// Toast.LENGTH_LONG).show();
 			}
 		} else {
 			System.out.println("ExecActivity.onInit:3");
-			Toast.makeText(this, "TTS failed to initialize", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "TTS failed to initialize", Toast.LENGTH_LONG)
+					.show();
 		}
 	}
 }
