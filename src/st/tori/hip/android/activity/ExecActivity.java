@@ -6,6 +6,7 @@ import st.tori.hip.cmd.CommandInterface;
 import st.tori.hip.cmd.CommandMailTo;
 import st.tori.hip.cmd.CommandResultInterface;
 import st.tori.hip.cmd.CommandResultTextToSpeechInterface;
+import st.tori.hip.cmd.CommandSpeachStub;
 import st.tori.hip.cmd.exception.CommandExecException;
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class ExecActivity extends Activity implements
 
 	public static final String PARAM_NAME_KEYWORD = "KEYWORD";
 
-	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] { new CommandMailTo(), };
+	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] { new CommandSpeachStub(), new CommandMailTo(), };
 
 	private TextView textKeyword;
 	private TextToSpeech mTts;
@@ -50,9 +51,7 @@ public class ExecActivity extends Activity implements
 				try {
 					CommandResultInterface result = COMMAND_ARRAY[i]
 							.exec(keyword);
-					if (result == null)
-						continue;
-					if (result instanceof CommandResultTextToSpeechInterface) {
+					if (result!=null && result instanceof CommandResultTextToSpeechInterface) {
 						String speechText = ((CommandResultTextToSpeechInterface) result)
 								.getSpeechText();
 						System.out.println("ExecActivity.onCreate:speechText="
@@ -62,6 +61,7 @@ public class ExecActivity extends Activity implements
 									null);
 						}
 					}
+					break;
 				} catch (CommandExecException e) {
 					// e.printStackTrace();
 					Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG)
