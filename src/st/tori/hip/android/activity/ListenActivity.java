@@ -8,14 +8,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class ListenActivity extends Activity implements SoundMonitorListener {
+public class ListenActivity extends Activity implements SoundMonitorListener, OnInitListener {
 
+	public static final String TAG = "Hip";
+	
 	Button mButtonStartListening;
 	TextView mTextRecognitionResult;
 	Button mButtonCheckSoundLevel;
@@ -23,6 +27,8 @@ public class ListenActivity extends Activity implements SoundMonitorListener {
 	private static final int MAX_SOUND_LEVEL = 30000;
 	
 	SoundMonitor mSoundMonitor;
+	
+	TextToSpeech mSpeech;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,8 @@ public class ListenActivity extends Activity implements SoundMonitorListener {
 		
 		mButtonStartListening.setOnClickListener(new ButtonStartListeningListener());
 		mButtonCheckSoundLevel.setOnClickListener(new ButtonCheckSoundListener());
+		
+		mSpeech = new TextToSpeech(this, this);
 		
 	}
 	
@@ -117,6 +125,18 @@ public class ListenActivity extends Activity implements SoundMonitorListener {
 	public void onLargeSoundDetected()
 	{
 		startVoiceRecognition();
+	}
+
+	@Override
+	public void onInit(int status)
+	{
+		if (status == TextToSpeech.SUCCESS) 
+		{
+			mSpeech.speak("こんにちは。音声のテストです。", TextToSpeech.QUEUE_FLUSH, null);
+		} else {
+			//
+			
+		}
 	}
 
 }
