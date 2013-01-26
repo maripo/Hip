@@ -25,10 +25,6 @@
             android:name=".ListenActivity"
             android:label="@string/title_activity" >
         </activity>
-        <activity
-            android:name=".ExecActivity"
-            android:label="@string/title_activity" >
-        </activity>
     </application>
 
 	<uses-permission android:name="android.permission.INTERNET" />

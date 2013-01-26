@@ -11,12 +11,13 @@ public class MainActivity extends Activity {
 
 	private Button buttonListen;
 	private Button buttonExec;
+	private CommandExecutor mCommandExecutor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		mCommandExecutor = new CommandExecutor(this);
 		Button buttonListen = (Button) findViewById(R.id.buttonListen);
 		buttonListen.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -28,9 +29,7 @@ public class MainActivity extends Activity {
 		buttonExec.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), ExecActivity.class);
-				i.putExtra(ExecActivity.PARAM_NAME_KEYWORD, "まりぽにメール");
-				startActivity(i);
+				mCommandExecutor.exec("まりぽにメール");
 			}
 		});
 	}

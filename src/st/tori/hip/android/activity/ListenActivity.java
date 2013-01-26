@@ -25,6 +25,7 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 	Button mButtonCheckSoundLevel;
 	ProgressBar mProgressBarSoundLevel;
 	private static final int MAX_SOUND_LEVEL = 30000;
+	CommandExecutor mCommandExecutor;
 	
 	SoundMonitor mSoundMonitor;
 	
@@ -34,6 +35,8 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listen);
+		
+		mCommandExecutor = new CommandExecutor(this);
 		
 		mButtonStartListening = (Button) findViewById(R.id.button_start_listening);
 		mTextRecognitionResult = (TextView) findViewById(R.id.text_recognition_result);
@@ -92,9 +95,7 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 				if (!textMatchList.isEmpty()) {
 					String message = textMatchList.get(0);
 					mTextRecognitionResult.setText(message);
-					Intent i = new Intent(getApplicationContext(), ExecActivity.class);
-					i.putExtra(ExecActivity.PARAM_NAME_KEYWORD, message);
-					startActivity(i);
+					mCommandExecutor.exec(message);
 				}
 			}
 			else {
@@ -112,6 +113,7 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 		super.onDestroy();
 		if (mSoundMonitor!=null)
 			mSoundMonitor.stop();
+		mCommandExecutor.dispose();
 	}
 
 	@Override

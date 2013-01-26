@@ -9,6 +9,7 @@ import st.tori.hip.cmd.CommandResultTextToSpeechInterface;
 import st.tori.hip.cmd.CommandSpeachStub;
 import st.tori.hip.cmd.exception.CommandExecException;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
@@ -16,9 +17,11 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ExecActivity extends Activity implements
+public class CommandExecutor implements
 		TextToSpeech.OnInitListener {
 
+	Context context;
+	
 	static {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 				.permitAll().build());
@@ -28,23 +31,17 @@ public class ExecActivity extends Activity implements
 
 	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] { new CommandMailTo(), new CommandSpeachStub(), };
 
-	private TextView textKeyword;
 	private TextToSpeech mTts;
+	
+	public CommandExecutor (Context context) {
+		this.context = context;
+		mTts = new TextToSpeech(context, this);
+	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_exec);
-
-		textKeyword = (TextView) findViewById(R.id.textKeyword);
-		mTts = new TextToSpeech(this, this);
-
-		String keyword = getIntent().getStringExtra(PARAM_NAME_KEYWORD);
+	public void exec(String keyword) {
 		if (keyword == null || keyword.length() <= 0) {
-			Toast.makeText(this, "Illegal Keyword", Toast.LENGTH_LONG).show();
-			finish();
+			Toast.makeText(context, "Illegal Keyword", Toast.LENGTH_LONG).show();
 		} else {
-			textKeyword.setText(keyword);
 			for (int i = 0; i < COMMAND_ARRAY.length; i++) {
 				if (!COMMAND_ARRAY[i].isMyKeyword(keyword))
 					continue;
@@ -64,27 +61,20 @@ public class ExecActivity extends Activity implements
 					break;
 				} catch (CommandExecException e) {
 					// e.printStackTrace();
-					Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG)
+					Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
 							.show();
 				}
 			}
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_exec, menu);
-		return true;
-	}
 
-	@Override
-	public void onDestroy() {
+	public void dispose() {
 		// shutdown() を忘れてはならない
 		if (mTts != null) {
 			mTts.stop();
 			mTts.shutdown();
 		}
-		super.onDestroy();
 	}
 
 	private boolean isTTSReady = false;
@@ -96,7 +86,7 @@ public class ExecActivity extends Activity implements
 			if (result == TextToSpeech.LANG_MISSING_DATA
 					|| result == TextToSpeech.LANG_NOT_SUPPORTED) {
 				System.out.println("ExecActivity.onInit:1");
-				Toast.makeText(this, "Japanese not available",
+				Toast.makeText(context, "Japanese not available",
 						Toast.LENGTH_LONG).show();
 			} else {
 				System.out.println("ExecActivity.onInit:2");
@@ -106,7 +96,7 @@ public class ExecActivity extends Activity implements
 			}
 		} else {
 			System.out.println("ExecActivity.onInit:3");
-			Toast.makeText(this, "TTS failed to initialize", Toast.LENGTH_LONG)
+			Toast.makeText(context, "TTS failed to initialize", Toast.LENGTH_LONG)
 					.show();
 		}
 	}
