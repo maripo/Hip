@@ -1,9 +1,12 @@
 package st.tori.hip.android.activity;
 
+import com.google.android.gcm.GCMRegistrar;
+
 import st.tori.hip.android.activity.CommandExecutor.CommandListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +17,7 @@ public class MainActivity extends Activity implements CommandListener {
 	private Button buttonExec;
 	private CommandExecutor mCommandExecutor;
 	
-	private String GCM_APP_ID = "506944099595";
+	public static String GCM_SENDER_ID = "506944099595";
 	
 	//Server Key AIzaSyCIQnfyzBHKr7lLbQJFWR4n3uw6Qu7Eyu0
 
@@ -37,6 +40,17 @@ public class MainActivity extends Activity implements CommandListener {
 				mCommandExecutor.exec("まりぽにメール");
 			}
 		});
+		
+		//GCM
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		if (regId.equals("")) {
+			Log.v("Hip", "GCM: not registered");
+			GCMRegistrar.register(this, GCM_SENDER_ID);
+		} else {
+			Log.v("Hip", "GCM: already registered. REG_ID=" + regId);
+		}
 	}
 
 	@Override
