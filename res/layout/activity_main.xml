@@ -3,12 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
+    <Button
+        android:id="@+id/buttonListen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExec"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start_listening" />
+
+    <Button
+        android:id="@+id/buttonExec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".MainActivity" />
+        android:text="@string/exec_command" />
 
 </RelativeLayout>

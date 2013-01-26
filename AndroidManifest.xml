@@ -14,12 +14,20 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="st.tori.hip.android.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="st.tori.hip.android.ListenActivity"
+            android:label="@string/title_activity" >
+        </activity>
+        <activity
+            android:name="st.tori.hip.android.ExecActivity"
+            android:label="@string/title_activity" >
         </activity>
     </application>
 
