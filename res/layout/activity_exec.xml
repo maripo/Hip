@@ -4,12 +4,12 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textKeyword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Exec"
+        android:text="Keyword"
         tools:context=".ExecActivity" />
 
 </RelativeLayout>
