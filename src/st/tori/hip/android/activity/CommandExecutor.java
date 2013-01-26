@@ -2,6 +2,7 @@ package st.tori.hip.android.activity;
 
 import java.util.Locale;
 
+import st.tori.hip.android.activity.CommandExecutor.CommandListener;
 import st.tori.hip.cmd.CommandCreateEvernoteMemo;
 import st.tori.hip.cmd.CommandEmitIrPattern1;
 import st.tori.hip.cmd.CommandEmitIrPattern2;
@@ -36,6 +37,10 @@ public class CommandExecutor implements
 
 	public static final String PARAM_NAME_KEYWORD = "KEYWORD";
 
+	public interface CommandListener {
+		
+	}
+	
 	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] {
 		new CommandMailTo(),
 		new CommandCreateEvernoteMemo(),
@@ -54,9 +59,12 @@ public class CommandExecutor implements
 	};
 
 	private TextToSpeech mTts;
+
+	private CommandListener listener;
 	
-	public CommandExecutor (Context context) {
+	public CommandExecutor (Context context, CommandListener listener) {
 		this.context = context;
+		this.listener = listener;
 		mTts = new TextToSpeech(context, this);
 	}
 
@@ -65,12 +73,11 @@ public class CommandExecutor implements
 			Toast.makeText(context, "No Keyword", Toast.LENGTH_LONG).show();
 		} else {
 			boolean found = false;
-			for (int i = 0; i < COMMAND_ARRAY.length; i++) {
-				if (!COMMAND_ARRAY[i].isMyKeyword(keyword))
+			for (CommandInterface command: COMMAND_ARRAY) {
+				if (!command.isMyKeyword(keyword))
 					continue;
 				try {
-					CommandResultInterface result = COMMAND_ARRAY[i]
-							.exec(keyword);
+					CommandResultInterface result = command.exec(keyword);
 					if (result!=null && result instanceof CommandResultTextToSpeechInterface) {
 						String speechText = ((CommandResultTextToSpeechInterface) result)
 								.getSpeechText();
