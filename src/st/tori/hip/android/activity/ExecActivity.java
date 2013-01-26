@@ -26,7 +26,7 @@ public class ExecActivity extends Activity implements
 
 	public static final String PARAM_NAME_KEYWORD = "KEYWORD";
 
-	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] { new CommandSpeachStub(), new CommandMailTo(), };
+	private static CommandInterface[] COMMAND_ARRAY = new CommandInterface[] { new CommandMailTo(), new CommandSpeachStub(), };
 
 	private TextView textKeyword;
 	private TextToSpeech mTts;
