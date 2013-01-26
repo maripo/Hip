@@ -40,7 +40,7 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 			String urlStr = "http://dev.tori.st/maven.websample/hip?"
 					+ PARAM_NAME_COMMAND_ID + "=" + getCommandId() + "&"
 					+ PARAM_NAME_COMMAND_VALUE + "="
-					+ URLEncoder.encode(value, "Shift_JIS");
+					+ URLEncoder.encode(value, "UTF-8");
 			return new HipServerResponse(doGet(urlStr));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
