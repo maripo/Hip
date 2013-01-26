@@ -20,12 +20,7 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 	public static final int COMMAND_ID_JALAN_SEARCH_ONSEN = 500;
 	public static final int COMMAND_ID_GURUNAVI_SEARCH = 600;
 	public static final int COMMAND_ID_TURN_ON_BATH = 700;
-	public static final int COMMAND_ID_EMIT_IR_PATTERN1 = 800;
-	public static final int COMMAND_ID_EMIT_IR_PATTERN2 = 900;
-	public static final int COMMAND_ID_EMIT_IR_PATTERN3 = 1000;
-	public static final int COMMAND_ID_EMIT_IR_PATTERN4 = 1100;
-	public static final int COMMAND_ID_EMIT_IR_PATTERN5 = 1200;
-	public static final int COMMAND_ID_EMIT_IR_PATTERN6 = 1300;
+	public static final int COMMAND_ID_EMIT_IR = 800;
 
 	protected abstract int getCommandId();
 
