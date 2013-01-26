@@ -2,6 +2,7 @@ package st.tori.hip.android.activity;
 
 import java.util.ArrayList;
 
+import st.tori.hip.android.activity.CommandExecutor.CommandListener;
 import st.tori.hip.android.widget.SoundMonitor;
 import st.tori.hip.android.widget.SoundMonitor.SoundMonitorListener;
 import android.app.Activity;
@@ -16,7 +17,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class ListenActivity extends Activity implements SoundMonitorListener, OnInitListener {
+public class ListenActivity extends Activity implements SoundMonitorListener, OnInitListener, CommandListener {
 
 	public static final String TAG = "Hip";
 	
@@ -36,19 +37,22 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listen);
 		
-		mCommandExecutor = new CommandExecutor(this);
+		mCommandExecutor = new CommandExecutor(this, this);
 		
 		mButtonStartListening = (Button) findViewById(R.id.button_start_listening);
 		mTextRecognitionResult = (TextView) findViewById(R.id.text_recognition_result);
 		mButtonCheckSoundLevel = (Button) findViewById(R.id.button_check_sound_level);
 		mProgressBarSoundLevel = (ProgressBar) findViewById(R.id.progress_bar_sound_level);
 		mProgressBarSoundLevel.setMax(MAX_SOUND_LEVEL);
+
+		mButtonStartListening.setVisibility(View.INVISIBLE);
+		mButtonCheckSoundLevel.setVisibility(View.INVISIBLE);
 		
 		mSoundMonitor = new SoundMonitor();
 		mSoundMonitor.setListener(this);
 		
 		mButtonStartListening.setOnClickListener(new ButtonStartListeningListener());
-		mButtonCheckSoundLevel.setOnClickListener(new ButtonCheckSoundListener());
+		startVoiceRecognition();
 		
 		mSpeech = new TextToSpeech(this, this);
 		
