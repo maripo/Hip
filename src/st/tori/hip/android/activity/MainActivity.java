@@ -28,7 +28,9 @@ public class MainActivity extends Activity {
 		buttonExec.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(getApplicationContext(), ExecActivity.class));
+				Intent i = new Intent(getApplicationContext(), ExecActivity.class);
+				i.putExtra(ExecActivity.PARAM_NAME_KEYWORD, "まりぽにメール");
+				startActivity(i);
 			}
 		});
 	}
