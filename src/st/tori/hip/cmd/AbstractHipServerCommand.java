@@ -62,6 +62,7 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 			http.disconnect();
 			String body = new String(b);
 			System.out.println("Response:"+body);
+			return body;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
