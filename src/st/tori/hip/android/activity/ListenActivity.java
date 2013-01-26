@@ -44,12 +44,15 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 		mButtonCheckSoundLevel = (Button) findViewById(R.id.button_check_sound_level);
 		mProgressBarSoundLevel = (ProgressBar) findViewById(R.id.progress_bar_sound_level);
 		mProgressBarSoundLevel.setMax(MAX_SOUND_LEVEL);
+
+		mButtonStartListening.setVisibility(View.INVISIBLE);
+		mButtonCheckSoundLevel.setVisibility(View.INVISIBLE);
 		
 		mSoundMonitor = new SoundMonitor();
 		mSoundMonitor.setListener(this);
 		
 		mButtonStartListening.setOnClickListener(new ButtonStartListeningListener());
-		mButtonCheckSoundLevel.setOnClickListener(new ButtonCheckSoundListener());
+		startVoiceRecognition();
 		
 		mSpeech = new TextToSpeech(this, this);
 		
