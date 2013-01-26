@@ -1,6 +1,9 @@
 package st.tori.hip.android.activity;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import st.tori.hip.android.activity.CommandExecutor.CommandListener;
 import st.tori.hip.android.widget.SoundMonitor;
@@ -11,13 +14,16 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class ListenActivity extends Activity implements SoundMonitorListener, OnInitListener, CommandListener {
+public class ListenActivity extends Activity implements SoundMonitorListener, 
+	OnInitListener, CommandListener, OnUtteranceCompletedListener {
 
 	public static final String TAG = "Hip";
 	
@@ -52,9 +58,9 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 		mSoundMonitor.setListener(this);
 		
 		mButtonStartListening.setOnClickListener(new ButtonStartListeningListener());
-		startVoiceRecognition();
 		
 		mSpeech = new TextToSpeech(this, this);
+		mSoundMonitor.start();
 		
 	}
 	
@@ -90,24 +96,27 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 	}
 
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
+	boolean waitingSpeech = false;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, new Date().toString());
 		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
 			if(resultCode == RESULT_OK) {
 				ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				if (!textMatchList.isEmpty()) {
 					String message = textMatchList.get(0);
 					mTextRecognitionResult.setText(message);
-					mCommandExecutor.exec(message);
+					String resultMessage = mCommandExecutor.exec(message);
+					waitingSpeech = true;
+					mSpeech.speak(resultMessage, TextToSpeech.QUEUE_FLUSH, param);
 				}
 			}
 			else {
-				mTextRecognitionResult.setText("Voice recognition failed.");
+				waitingSpeech = true;
+				mSpeech.speak("聞き取れませんでした", TextToSpeech.QUEUE_ADD, param);
 			}
-		}
-		if (mSoundMonitor!=null) {
-			mSoundMonitor.resume();
 		}
 	}
 
@@ -117,7 +126,8 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 		super.onDestroy();
 		if (mSoundMonitor!=null)
 			mSoundMonitor.stop();
-		mCommandExecutor.dispose();
+		mSpeech.stop();
+		mSpeech.shutdown();
 	}
 
 	@Override
@@ -138,11 +148,18 @@ public class ListenActivity extends Activity implements SoundMonitorListener, On
 	{
 		if (status == TextToSpeech.SUCCESS) 
 		{
-			mSpeech.speak("こんにちは。音声のテストです。", TextToSpeech.QUEUE_FLUSH, null);
 		} else {
 			//
 			
 		}
+		mSpeech.setOnUtteranceCompletedListener(this);
+	}
+
+	@Override
+	public void onUtteranceCompleted(String utteranceId)
+	{
+		Log.d(TAG, "ListenActivity.onUtteranceCompleted");
+		mSoundMonitor.resume();
 	}
 
 }

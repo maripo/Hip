@@ -58,19 +58,17 @@ public class CommandExecutor implements
 		//CommandSpeachStub(),
 	};
 
-	private TextToSpeech mTts;
-
 	private CommandListener listener;
 	
 	public CommandExecutor (Context context, CommandListener listener) {
 		this.context = context;
 		this.listener = listener;
-		mTts = new TextToSpeech(context, this);
 	}
 
-	public void exec(String keyword) {
+	public String exec(String keyword) {
 		if (keyword == null || keyword.length() <= 0) {
 			Toast.makeText(context, "No Keyword", Toast.LENGTH_LONG).show();
+			return "なんですって?";
 		} else {
 			boolean found = false;
 			for (CommandInterface command: COMMAND_ARRAY) {
@@ -83,10 +81,7 @@ public class CommandExecutor implements
 								.getSpeechText();
 						System.out.println("ExecActivity.onCreate:speechText="
 								+ speechText);
-						if (speechText != null && speechText.length() > 0) {
-							mTts.speak(speechText, TextToSpeech.QUEUE_FLUSH,
-									null);
-						}
+						return speechText;
 					}
 					found = true;
 					break;
@@ -96,43 +91,17 @@ public class CommandExecutor implements
 							.show();
 				}
 			}
-			if(!found){
-				mTts.speak("なんですって？", TextToSpeech.QUEUE_FLUSH,
-						null);
-			}
 		}
+		return "なんですって?";
 	}
 
-
-	public void dispose() {
-		// shutdown() を忘れてはならない
-		if (mTts != null) {
-			mTts.stop();
-			mTts.shutdown();
-		}
-	}
 
 	private boolean isTTSReady = false;
 
 	@Override
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
-			int result = mTts.setLanguage(Locale.JAPAN);
-			if (result == TextToSpeech.LANG_MISSING_DATA
-					|| result == TextToSpeech.LANG_NOT_SUPPORTED) {
-				System.out.println("ExecActivity.onInit:1");
-				Toast.makeText(context, "Japanese not available",
-						Toast.LENGTH_LONG).show();
-			} else {
-				System.out.println("ExecActivity.onInit:2");
-				isTTSReady = true;
-				// Toast.makeText(this, "TTS initialized",
-				// Toast.LENGTH_LONG).show();
-			}
-		} else {
-			System.out.println("ExecActivity.onInit:3");
-			Toast.makeText(context, "TTS failed to initialize", Toast.LENGTH_LONG)
-					.show();
+			
 		}
 	}
 }
