@@ -14,7 +14,7 @@ public class CommandFacebook extends AbstractHipServerCommand {
 	
 	@Override
 	public boolean isMyKeyword(String keyword) {
-		return (keyword.startsWith("フェイスブック")||keyword.startsWith("facebook "));
+		return (keyword.startsWith("フェイスブック")||keyword.startsWith("facebook"));
 	}
 
 	private static final Pattern PATTERN_JP	 = Pattern.compile("^フェイスブック *(.*)$");
