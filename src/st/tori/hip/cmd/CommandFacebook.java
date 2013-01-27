@@ -18,7 +18,7 @@ public class CommandFacebook extends AbstractHipServerCommand {
 	}
 
 	private static final Pattern PATTERN_JP	 = Pattern.compile("^フェイスブック *(.*)$");
-	private static final Pattern PATTERN_EN	 = Pattern.compile("^facebook (.*)$");
+	private static final Pattern PATTERN_EN	 = Pattern.compile("^facebook *(.*)$");
 	@Override
 	protected String getCommandValue(String keyword) throws CommandExecException {
 		Matcher m;
