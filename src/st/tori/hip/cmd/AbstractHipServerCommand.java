@@ -21,6 +21,7 @@ public abstract class AbstractHipServerCommand implements CommandInterface {
 	public static final int COMMAND_ID_GURUNAVI_SEARCH = 6;
 	public static final int COMMAND_ID_TURN_ON_BATH = 7;
 	public static final int COMMAND_ID_EMIT_IR = 8;
+	public static final int COMMAND_ID_ROUX_FEEDER = 9;
 
 	protected abstract int getCommandId();
 

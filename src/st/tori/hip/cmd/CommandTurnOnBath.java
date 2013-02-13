@@ -11,7 +11,7 @@ public class CommandTurnOnBath extends AbstractHipServerCommand {
 	
 	@Override
 	public boolean isMyKeyword(String keyword) {
-		return (keyword.startsWith("風呂")||keyword.startsWith("bath"));
+		return (keyword.startsWith("プチ")||keyword.startsWith("ぷち")||keyword.startsWith("風呂")||keyword.startsWith("bath"));
 	}
 
 	@Override
